@@ -2,6 +2,9 @@
 
 Programme réponse au TD10 de Programmation C
 
+
+<https://gitlab.etude.eisti.fr/leflochtho/greyscalefromppm>
+
 ## Compilation
 
 Compilation simple : `make all`
