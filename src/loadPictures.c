@@ -11,7 +11,7 @@
 
 #include "loadPictures.h"
 
-int getDatasInt(FILE **imageStream)
+int getDataAsInt(FILE **imageStream)
 {
     int int_tmp = 0;
     int int_retour = 0;
@@ -26,6 +26,23 @@ int getDatasInt(FILE **imageStream)
     /* on vérifie si la ligne suivante n'est pas un commentaire pour gagner du temps sur une prochaine lecture */
     checkComments(imageStream);
     return (int_tmp);
+}
+
+int getDataAsChar(FILE **imageStream)
+{
+    char ch_tmp;
+    int int_retour = 0;
+    /* récupère un caractère dans le flux de fichier */
+    int_retour = fscanf(*imageStream, "%c", &ch_tmp);
+    /* si on n'arrive pas à lire dans le fichier, ou que le caractère lu n'est pas un 0 ou un 1 c'est qu'une erreur s'est produite */
+    if (int_retour == 0 || (ch_tmp != '1' && ch_tmp != '0'))
+    {
+        fprintf(stderr, "Erreur de lecture dans le fichier, arrêt du programme.\n");
+        exit(ERREUR_SAISIE);
+    }
+    /* on vérifie si la ligne suivante n'est pas un commentaire pour gagner du temps sur une prochaine lecture */
+    checkComments(imageStream);
+    return (ch_tmp - '0');
 }
 
 void checkComments(FILE **imageStream)
@@ -166,9 +183,9 @@ sImagePPM loadPPM(char *str_filePath)
     {
         /* récupération longueur et largeur ainsi que intensité maximale */
         checkComments(&imageStream);
-        imageACharger.largeur = getDatasInt(&imageStream);
-        imageACharger.hauteur = getDatasInt(&imageStream);
-        imageACharger.pixelIntensity = getDatasInt(&imageStream);
+        imageACharger.largeur = getDataAsInt(&imageStream);
+        imageACharger.hauteur = getDataAsInt(&imageStream);
+        imageACharger.pixelIntensity = getDataAsInt(&imageStream);
         /* allocation matrice */
         allocMatrixRGB(&imageACharger.imageMatrix, imageACharger.hauteur, imageACharger.largeur);
         /* tant que l'on est pas à la fin du fichier et que notre matrice n'est pas complète */
@@ -177,9 +194,9 @@ sImagePPM loadPPM(char *str_filePath)
             /* on recule la tete de lecture de 1 pour ne pas absorber le caractère lu par le fgetc lors de la comparaison de la boucle */
             fseek(imageStream, -1L, SEEK_CUR);
             /* Lecture RGB */
-            imageACharger.imageMatrix[int_largeur][int_longueur].R = getDatasInt(&imageStream);
-            imageACharger.imageMatrix[int_largeur][int_longueur].G = getDatasInt(&imageStream);
-            imageACharger.imageMatrix[int_largeur][int_longueur].B = getDatasInt(&imageStream);
+            imageACharger.imageMatrix[int_largeur][int_longueur].R = getDataAsInt(&imageStream);
+            imageACharger.imageMatrix[int_largeur][int_longueur].G = getDataAsInt(&imageStream);
+            imageACharger.imageMatrix[int_largeur][int_longueur].B = getDataAsInt(&imageStream);
             /* une fois le pixel lu, on passe au pixel suivant */
             int_largeur++;
             /* puis a la ligne de pixel suivante une fois que la ligne actuelle est pleine */
@@ -226,8 +243,8 @@ sImagePBM loadPBM(char *str_filePath)
     {
         /* récupération longueur et largeur */
         checkComments(&imageStream);
-        imageACharger.largeur = getDatasInt(&imageStream);
-        imageACharger.hauteur = getDatasInt(&imageStream);
+        imageACharger.largeur = getDataAsInt(&imageStream);
+        imageACharger.hauteur = getDataAsInt(&imageStream);
         /* allocation matrice */
         allocMatrix(&imageACharger.imageMatrix, imageACharger.hauteur, imageACharger.largeur);
         /* tant que l'on est pas à la fin du fichier et que la matrice n'est pas pleine */
@@ -235,7 +252,7 @@ sImagePBM loadPBM(char *str_filePath)
         {
             /* on recule le curseur d'une position pour pouvoir lire le caractère absorbé par le fgetc */
             fseek(imageStream, -1L, SEEK_CUR);
-            imageACharger.imageMatrix[int_largeur][int_longueur] = getDatasInt(&imageStream);
+            imageACharger.imageMatrix[int_largeur][int_longueur] = getDataAsChar(&imageStream);
             /* une fois notre pixel lu, on avance dans la ligne */
             int_largeur++;
             /* une fois la ligne terminée on passe à la suivante */
@@ -280,9 +297,9 @@ sImagePGM loadPGM(char *str_filePath)
     {
         /* récupération longueur, largeur et intensité maximale d'un pixel */
         checkComments(&imageStream);
-        imageACharger.largeur = getDatasInt(&imageStream);
-        imageACharger.hauteur = getDatasInt(&imageStream);
-        imageACharger.pixelIntensity = getDatasInt(&imageStream);
+        imageACharger.largeur = getDataAsInt(&imageStream);
+        imageACharger.hauteur = getDataAsInt(&imageStream);
+        imageACharger.pixelIntensity = getDataAsInt(&imageStream);
         /* allocation matrice */
         allocMatrix(&imageACharger.imageMatrix, imageACharger.hauteur, imageACharger.largeur);
         /* tant que l'on n'est pas à la fin du fichier ou que notre matrice n'est pas remplie */
@@ -290,7 +307,7 @@ sImagePGM loadPGM(char *str_filePath)
         {
             /* on recule la tete de lecture d'un caractère pour remettre en place le caractère absorbé par le fgetc */
             fseek(imageStream, -1L, SEEK_CUR);
-            imageACharger.imageMatrix[int_largeur][int_longueur] = getDatasInt(&imageStream);
+            imageACharger.imageMatrix[int_largeur][int_longueur] = getDataAsInt(&imageStream);
             /* une fois notre pixel lu on avance dans la ligne */
             int_largeur++;
             /* une fois notre ligne de pixel terminée, on passe à la suivante */

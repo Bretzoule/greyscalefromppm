@@ -55,12 +55,25 @@ void checkComments(FILE **imageStream);
  *  \author LEFLOCH Thomas <leflochtho@eisti.eu>
  *  \version 0.1
  *  \date Jeu 17 Décembre 2020 - 11:08:28
- *  \brief permet de récupérer une valeur dans le fichier et de la retourner
+ *  \brief permet de récupérer une valeur comme int dans le fichier et de la retourner
  *  \param imageStream : flux de fichier
  *  \return valeur lue dans le fichier
  *  \remarks 
  */
-int getDatasInt(FILE **imageStream);
+int getDataAsInt(FILE **imageStream);
+
+/*!
+ *  \fn int getDataAsChar(FILE **imageStream)
+ *  \author LEFLOCH Thomas <leflochtho@eisti.eu>
+ *  \version 0.1
+ *  \date Jeu 17 Décembre 2020 - 11:08:28
+ *  \brief permet de récupérer une valeur comme char dans le fichier et de la retourner castée en int
+ *  \param imageStream : flux de fichier
+ *  \return valeur lue dans le fichier
+ *  \remarks 
+ */
+int getDataAsChar(FILE **imageStream);
+
 
 /*!
  *  \fn void freeTabRGB(sPixel ***image, int int_longueur, int int_largeur)
