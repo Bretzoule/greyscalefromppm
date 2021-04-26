@@ -1,6 +1,6 @@
 # TD-FICHIERS
 
-Programme réponse au TD10 de Programmation C
+Programme réponse au TD10 de Programmation C du Semestre 1 d'ING1
 
 
 <https://gitlab.etude.eisti.fr/leflochtho/greyscalefromppm>
