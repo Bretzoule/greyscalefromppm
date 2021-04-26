@@ -3,13 +3,14 @@ CFLAGS = -Wall -Iinclude
 LDFLAGS = -lm
 RM = rm -rf
 SRC = $(wildcard $(srcdir)*.c)
-HEAD = $(wildcard $(srcdir)*.h)
+HEAD = $(wildcard $(includedir)*.h)
 OBJ = $(subst $(srcdir), $(bindir),$(SRC:.c=.o))
 PROG = $(bindir)td10
 srcdir = ./src/
 docdir = ./doc/
 bindir = ./bin/
 savedir = ./save/
+includedir = ./include/
 CP = cp
 
 all: $(PROG)
@@ -25,14 +26,15 @@ clean :
 	$(RM) $(OBJ) core
 
 .PHONY: save
-save :
-	$(CP) $(SRC) $(savedir) && $(CP) $(HEAD) $(savedir)
+save : savehead
+	$(CP) $(SRC) $(savedir)
+savehead: 
+	$(CP) $(HEAD) $(savedir)
 
 .PHONY: mrproper
 mrproper :
-	$(RM) -f $(bindir)* $(docdir)html/ $(docdir)latex/
+	$(RM) -f $(bindir)* $(docdir)html/ $(docdir)latex/ $(savedir)*
 	
 .PHONY: doxy
-
 doxy:
 	doxygen ./doc/Doxyfile && firefox ./doc/html/index.html
